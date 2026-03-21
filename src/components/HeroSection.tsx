@@ -1,42 +1,29 @@
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
+import heroBg from "@/assets/hero-bg.jpg";
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
-      {/* Ambient glow */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full bg-primary/5 blur-[120px] pointer-events-none" />
+      {/* Background image */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `url(${heroBg})` }}
+      />
+      <div className="absolute inset-0 bg-background/60" />
       
       <div className="relative z-10 max-w-4xl text-center">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="text-sm uppercase tracking-[0.3em] text-muted-foreground mb-6"
-        >
-          Creative Developer & Designer
-        </motion.p>
-        
         <motion.h1
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.15 }}
+          transition={{ duration: 0.7 }}
           className="text-5xl sm:text-7xl lg:text-8xl leading-[0.95] mb-8"
         >
-          I craft{" "}
-          <span className="text-gradient italic">digital</span>
+          I am{" "}
+          <span className="text-gradient italic">Drish</span>
           <br />
-          experiences
+          and I love boys
         </motion.h1>
-        
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-lg text-muted-foreground max-w-lg mx-auto mb-12"
-        >
-          Blending design thinking with clean code to build products that feel alive.
-        </motion.p>
 
         <motion.div
           initial={{ opacity: 0 }}
