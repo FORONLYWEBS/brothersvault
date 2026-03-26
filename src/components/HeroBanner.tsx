@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import tshirtBrotherhood from "@/assets/tshirt-brotherhood.png";
+import heroMan from "@/assets/hero-man.jpg";
 
 const HeroBanner = () => {
   return (
@@ -7,9 +7,9 @@ const HeroBanner = () => {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src={tshirtBrotherhood}
+          src={heroMan}
           alt="Brothers Vault"
-          className="w-full h-full object-cover opacity-20"
+          className="w-full h-full object-cover opacity-30 object-bottom"
         />
       </div>
 
