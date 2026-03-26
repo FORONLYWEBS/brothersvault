@@ -1,19 +1,27 @@
-import Navbar from "@/components/Navbar";
-import HeroSection from "@/components/HeroSection";
-import AboutSection from "@/components/AboutSection";
-import ProjectsSection from "@/components/ProjectsSection";
-import ContactSection from "@/components/ContactSection";
-import Footer from "@/components/Footer";
+import { useState, useEffect } from "react";
+import BrandNavbar from "@/components/BrandNavbar";
+import HeroBanner from "@/components/HeroBanner";
+import MarqueeBanner from "@/components/MarqueeBanner";
+import ProductGrid from "@/components/ProductGrid";
+import OrderSection from "@/components/OrderSection";
+import BrandFooter from "@/components/BrandFooter";
 
 const Index = () => {
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+
+  const handleOrder = (productId: string) => {
+    setSelectedProduct(productId);
+    document.getElementById("order")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <HeroSection />
-      <AboutSection />
-      <ProjectsSection />
-      <ContactSection />
-      <Footer />
+      <BrandNavbar />
+      <HeroBanner />
+      <MarqueeBanner />
+      <ProductGrid onOrder={handleOrder} />
+      <OrderSection selectedProductId={selectedProduct} />
+      <BrandFooter />
     </div>
   );
 };
