@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getOrders, type Order } from "@/lib/store";
+import { getOrders, deleteOrder, type Order } from "@/lib/store";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Lock, Package, Trash2 } from "lucide-react";
+import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 
 const Admin = () => {
@@ -10,6 +10,7 @@ const Admin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
+  const [proofModal, setProofModal] = useState<string | null>(null);
 
   useEffect(() => {
     if (authenticated) {
@@ -25,6 +26,11 @@ const Admin = () => {
     } else {
       setError("Invalid credentials");
     }
+  };
+
+  const handleDelete = (id: string) => {
+    deleteOrder(id);
+    setOrders((prev) => prev.filter((o) => o.id !== id));
   };
 
   if (!authenticated) {
@@ -94,6 +100,18 @@ const Admin = () => {
         </div>
       </div>
 
+      {/* Proof Modal */}
+      {proofModal && (
+        <div className="fixed inset-0 z-50 bg-foreground/80 flex items-center justify-center p-4" onClick={() => setProofModal(null)}>
+          <div className="bg-background p-2 rounded max-w-lg max-h-[80vh]" onClick={(e) => e.stopPropagation()}>
+            <img src={proofModal} alt="Payment proof" className="max-w-full max-h-[75vh] object-contain" />
+            <button onClick={() => setProofModal(null)} className="w-full mt-2 py-2 text-xs font-oswald tracking-wider bg-secondary hover:bg-secondary/80 transition-colors">
+              CLOSE
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* Orders */}
       <div className="max-w-6xl mx-auto px-4 md:px-8 py-8">
         {orders.length === 0 ? (
@@ -110,18 +128,44 @@ const Admin = () => {
                   alt={order.productName}
                   className="w-20 h-20 object-cover rounded-sm bg-secondary flex-shrink-0"
                 />
-                <div className="flex-1 space-y-1">
-                  <p className="font-oswald font-semibold tracking-wide">{order.productName}</p>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-1 text-sm text-muted-foreground font-oswald">
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-3">
+                    <p className="font-oswald font-semibold tracking-wide">{order.productName}</p>
+                    <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-oswald tracking-wider ${
+                      order.paymentMethod === "fonepay"
+                        ? "bg-green-500/10 text-green-600 border border-green-500/20"
+                        : "bg-amber-500/10 text-amber-600 border border-amber-500/20"
+                    }`}>
+                      {order.paymentMethod === "fonepay" ? <CreditCard className="w-3 h-3" /> : <Truck className="w-3 h-3" />}
+                      {order.paymentMethod === "fonepay" ? "FONEPAY" : "COD"}
+                    </span>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 gap-y-1 text-sm text-muted-foreground font-oswald">
                     <p>Name: <span className="text-foreground">{order.name}</span></p>
                     <p>Phone: <span className="text-foreground">{order.phone}</span></p>
                     <p>Age: <span className="text-foreground">{order.age}</span></p>
                     <p>Size: <span className="text-foreground font-semibold">{order.size}</span></p>
+                    <p className="col-span-2">Address: <span className="text-foreground">{order.address}</span></p>
                   </div>
+                  {order.paymentProof && (
+                    <button
+                      onClick={() => setProofModal(order.paymentProof!)}
+                      className="inline-flex items-center gap-2 text-xs font-oswald tracking-wider text-foreground/70 hover:text-foreground border border-border px-3 py-1.5 transition-colors"
+                    >
+                      <ImageIcon className="w-3 h-3" /> VIEW PAYMENT PROOF
+                    </button>
+                  )}
                   <p className="text-xs text-muted-foreground/60 font-oswald mt-1">
                     {new Date(order.timestamp).toLocaleString()}
                   </p>
                 </div>
+                <button
+                  onClick={() => handleDelete(order.id)}
+                  className="text-muted-foreground hover:text-destructive transition-colors p-2"
+                  title="Delete order"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
               </div>
             ))}
           </div>
