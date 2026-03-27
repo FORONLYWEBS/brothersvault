@@ -7,9 +7,9 @@ import tshirt4 from "@/assets/tshirt-4.jpg";
 import tshirt5 from "@/assets/tshirt-5.jpg";
 import tshirt6 from "@/assets/tshirt-6.jpg";
 import tshirt7 from "@/assets/tshirt-7.jpg";
-import type { Product } from "./store";
+import { type Product, getCustomProducts } from "./store";
 
-export const products: Product[] = [
+export const defaultProducts: Product[] = [
   { id: "1", name: "Brotherhood Classic Tee", price: 1499, image: tshirtBrotherhood, tag: "BESTSELLER" },
   { id: "2", name: "Barcelona Legacy Tee", price: 1799, image: tshirtBarcelona, tag: "NEW" },
   { id: "3", name: "Vault Oversized Black", price: 1399, image: tshirt1 },
@@ -20,3 +20,10 @@ export const products: Product[] = [
   { id: "8", name: "Casual Vault Fit", price: 1599, image: tshirt6 },
   { id: "9", name: "Acid Wash Vault Tee", price: 1899, image: tshirt7, tag: "LIMITED" },
 ];
+
+export function getAllProducts(): Product[] {
+  return [...defaultProducts, ...getCustomProducts()];
+}
+
+// Keep backward compat — components that import `products` will get all
+export const products = defaultProducts;
