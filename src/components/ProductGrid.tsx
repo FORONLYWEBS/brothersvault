@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { products } from "@/lib/products";
+import { getAllProducts } from "@/lib/products";
 
 interface ProductGridProps {
   onOrder: (productId: string) => void;
 }
 
 const ProductGrid = ({ onOrder }: ProductGridProps) => {
+  const products = getAllProducts();
   return (
     <section id="collection" className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
       <div className="text-center mb-16">

@@ -44,3 +44,25 @@ export interface Product {
   image: string;
   tag?: string;
 }
+
+// Custom products (admin-added)
+export function getCustomProducts(): Product[] {
+  try {
+    return JSON.parse(localStorage.getItem("bv_custom_products") || "[]");
+  } catch {
+    return [];
+  }
+}
+
+export function addCustomProduct(product: Omit<Product, "id">): Product {
+  const products = getCustomProducts();
+  const newProduct: Product = { ...product, id: `custom-${Date.now()}` };
+  products.push(newProduct);
+  localStorage.setItem("bv_custom_products", JSON.stringify(products));
+  return newProduct;
+}
+
+export function deleteCustomProduct(id: string): void {
+  const products = getCustomProducts().filter((p) => p.id !== id);
+  localStorage.setItem("bv_custom_products", JSON.stringify(products));
+}
