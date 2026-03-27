@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { getOrders, deleteOrder, type Order } from "@/lib/store";
+import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCustomProduct, type Order, type Product } from "@/lib/store";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon } from "lucide-react";
+import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X } from "lucide-react";
 import logo from "@/assets/logo.jpg";
 
 const Admin = () => {
@@ -11,10 +11,18 @@ const Admin = () => {
   const [error, setError] = useState("");
   const [orders, setOrders] = useState<Order[]>([]);
   const [proofModal, setProofModal] = useState<string | null>(null);
+  const [showAddProduct, setShowAddProduct] = useState(false);
+  const [newName, setNewName] = useState("");
+  const [newPrice, setNewPrice] = useState("");
+  const [newTag, setNewTag] = useState("");
+  const [newImage, setNewImage] = useState("");
+  const [newImageName, setNewImageName] = useState("");
+  const [customProducts, setCustomProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (authenticated) {
       setOrders(getOrders().sort((a, b) => b.timestamp - a.timestamp));
+      setCustomProducts(getCustomProducts());
     }
   }, [authenticated]);
 
@@ -31,6 +39,41 @@ const Admin = () => {
   const handleDelete = (id: string) => {
     deleteOrder(id);
     setOrders((prev) => prev.filter((o) => o.id !== id));
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setNewImage(reader.result as string);
+      setNewImageName(file.name);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddProduct = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newName || !newPrice || !newImage) return;
+    const product = addCustomProduct({
+      name: newName,
+      price: Number(newPrice),
+      image: newImage,
+      tag: newTag || undefined,
+    });
+    setCustomProducts((prev) => [...prev, product]);
+    setNewName("");
+    setNewPrice("");
+    setNewTag("");
+    setNewImage("");
+    setNewImageName("");
+    setShowAddProduct(false);
+  };
+
+  const handleDeleteProduct = (id: string) => {
+    deleteCustomProduct(id);
+    setCustomProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
   if (!authenticated) {
@@ -91,6 +134,12 @@ const Admin = () => {
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <h1 className="text-2xl font-bebas tracking-wider">ADMIN PANEL</h1>
+          <button
+            onClick={() => setShowAddProduct(true)}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-foreground text-primary-foreground text-xs font-oswald tracking-[0.15em] hover:bg-foreground/90 transition-colors"
+          >
+            <Plus className="w-3.5 h-3.5" /> ADD T-SHIRT
+          </button>
         </div>
         <div className="flex items-center gap-3">
           <Package className="w-4 h-4 text-muted-foreground" />
@@ -100,6 +149,80 @@ const Admin = () => {
         </div>
       </div>
 
+      {/* Add Product Modal */}
+      {showAddProduct && (
+        <div className="fixed inset-0 z-50 bg-foreground/80 flex items-center justify-center p-4" onClick={() => setShowAddProduct(false)}>
+          <div className="bg-background border border-border p-6 w-full max-w-md space-y-5" onClick={(e) => e.stopPropagation()}>
+            <div className="flex items-center justify-between">
+              <h2 className="text-xl font-bebas tracking-wider">ADD NEW T-SHIRT</h2>
+              <button onClick={() => setShowAddProduct(false)} className="text-muted-foreground hover:text-foreground">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            <form onSubmit={handleAddProduct} className="space-y-4">
+              <div>
+                <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">T-SHIRT NAME</label>
+                <input
+                  type="text"
+                  value={newName}
+                  onChange={(e) => setNewName(e.target.value)}
+                  className="w-full px-4 py-3 bg-secondary border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors"
+                  placeholder="e.g. Vault Graphic Tee"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">PRICE (₹)</label>
+                  <input
+                    type="number"
+                    value={newPrice}
+                    onChange={(e) => setNewPrice(e.target.value)}
+                    className="w-full px-4 py-3 bg-secondary border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors"
+                    placeholder="1499"
+                    min="1"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">TAG (OPTIONAL)</label>
+                  <input
+                    type="text"
+                    value={newTag}
+                    onChange={(e) => setNewTag(e.target.value)}
+                    className="w-full px-4 py-3 bg-secondary border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors"
+                    placeholder="e.g. NEW, HOT"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">T-SHIRT IMAGE</label>
+                <label className="flex flex-col items-center gap-3 p-6 border-2 border-dashed border-border hover:border-foreground/50 cursor-pointer transition-colors bg-secondary">
+                  {newImage ? (
+                    <>
+                      <img src={newImage} alt="Preview" className="w-24 h-24 object-cover rounded-sm" />
+                      <p className="text-xs font-oswald tracking-wide text-muted-foreground">{newImageName}</p>
+                    </>
+                  ) : (
+                    <>
+                      <Upload className="w-6 h-6 text-muted-foreground" />
+                      <p className="text-xs font-oswald tracking-wider">UPLOAD IMAGE</p>
+                    </>
+                  )}
+                  <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                </label>
+              </div>
+              <button
+                type="submit"
+                className="w-full py-3 bg-foreground text-primary-foreground font-oswald text-sm tracking-[0.3em] hover:bg-foreground/90 transition-colors"
+              >
+                ADD T-SHIRT
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+
       {/* Proof Modal */}
       {proofModal && (
         <div className="fixed inset-0 z-50 bg-foreground/80 flex items-center justify-center p-4" onClick={() => setProofModal(null)}>
@@ -108,6 +231,29 @@ const Admin = () => {
             <button onClick={() => setProofModal(null)} className="w-full mt-2 py-2 text-xs font-oswald tracking-wider bg-secondary hover:bg-secondary/80 transition-colors">
               CLOSE
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Products Section */}
+      {customProducts.length > 0 && (
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 border-b border-border">
+          <p className="text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-4">CUSTOM ADDED T-SHIRTS</p>
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+            {customProducts.map((p) => (
+              <div key={p.id} className="relative group border border-border p-2">
+                <img src={p.image} alt={p.name} className="w-full aspect-square object-cover rounded-sm" />
+                <p className="text-xs font-oswald tracking-wide mt-1 truncate">{p.name}</p>
+                <p className="text-xs text-muted-foreground font-oswald">₹{p.price}</p>
+                <button
+                  onClick={() => handleDeleteProduct(p.id)}
+                  className="absolute top-1 right-1 bg-destructive text-destructive-foreground p-1 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity"
+                  title="Remove"
+                >
+                  <Trash2 className="w-3 h-3" />
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       )}
