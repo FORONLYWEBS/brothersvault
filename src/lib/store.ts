@@ -6,6 +6,9 @@ export interface Order {
   phone: string;
   age: string;
   size: string;
+  address: string;
+  paymentMethod: "fonepay" | "cod";
+  paymentProof?: string; // base64 data URL for fonepay proof
   timestamp: number;
 }
 
@@ -27,6 +30,11 @@ export function addOrder(order: Omit<Order, "id" | "timestamp">): Order {
   orders.push(newOrder);
   localStorage.setItem("bv_orders", JSON.stringify(orders));
   return newOrder;
+}
+
+export function deleteOrder(id: string): void {
+  const orders = getOrders().filter((o) => o.id !== id);
+  localStorage.setItem("bv_orders", JSON.stringify(orders));
 }
 
 export interface Product {
