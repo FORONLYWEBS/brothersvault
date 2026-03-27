@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { products } from "@/lib/products";
+import { getAllProducts } from "@/lib/products";
 import { addOrder } from "@/lib/store";
 import { toast } from "sonner";
 import { Check, Upload, CreditCard, Truck, ImageIcon } from "lucide-react";
@@ -13,6 +13,7 @@ interface OrderSectionProps {
 const sizes = ["S", "M", "L", "XL", "XXL"];
 
 const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
+  const products = getAllProducts();
   const [selected, setSelected] = useState<string | null>(selectedProductId || null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
