@@ -7,6 +7,7 @@ import { Check, Upload, CreditCard, Truck } from "lucide-react";
 import fonepayQr from "@/assets/fonepay-qr.jpg";
 import SpiderWebDecor from "./SpiderWebDecor";
 import FloatingParticles from "./FloatingParticles";
+import GhostFog from "./GhostFog";
 
 interface OrderSectionProps {
   selectedProductId?: string | null;
@@ -81,36 +82,57 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
   };
 
   return (
-    <section id="order" className="relative py-20 px-4 md:px-8 bg-card overflow-hidden">
-      <FloatingParticles count={10} />
-      <SpiderWebDecor position="top-left" size={140} opacity={0.06} />
+    <section id="order" className="relative py-24 px-4 md:px-8 bg-card overflow-hidden">
+      <GhostFog />
+      <FloatingParticles count={12} />
+      <SpiderWebDecor position="top-left" size={200} opacity={0.1} withSpider />
+      <SpiderWebDecor position="top-right" size={160} opacity={0.07} />
+      <SpiderWebDecor position="bottom-right" size={140} opacity={0.05} />
+
+      {/* Top & bottom atmospheric borders */}
+      <motion.div
+        className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/40 to-transparent"
+        animate={{ opacity: [0.2, 0.6, 0.2] }}
+        transition={{ duration: 4, repeat: Infinity }}
+      />
+      <motion.div
+        className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"
+        animate={{ opacity: [0.3, 0.5, 0.3] }}
+        transition={{ duration: 5, repeat: Infinity }}
+      />
 
       <div className="max-w-4xl mx-auto relative z-10">
-        <div className="text-center mb-12">
+        <div className="text-center mb-14">
           <motion.p
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             className="text-xs tracking-[0.4em] font-oswald text-primary/70 mb-2"
           >
-            PLACE YOUR
+            🕸️ PLACE YOUR
           </motion.p>
           <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-4xl md:text-5xl font-bebas tracking-wider"
+            className="text-5xl md:text-6xl font-bebas tracking-wider"
           >
-            ORDER NOW
+            <motion.span
+              animate={{ opacity: [1, 0.7, 1] }}
+              transition={{ duration: 3, repeat: Infinity }}
+              className="bg-gradient-to-b from-foreground via-foreground to-primary/60 bg-clip-text text-transparent"
+            >
+              ORDER NOW
+            </motion.span>
           </motion.h2>
           <motion.div
             initial={{ width: 0 }}
-            whileInView={{ width: 60 }}
+            whileInView={{ width: 80 }}
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
-            className="h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-3"
+            className="h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-4"
           />
-          <p className="mt-3 text-sm text-muted-foreground font-oswald tracking-wide">
+          <p className="mt-4 text-sm text-muted-foreground font-oswald tracking-wide">
             Select your T-shirt, fill in your details & choose payment
           </p>
         </div>
@@ -128,7 +150,7 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   className={`relative aspect-square overflow-hidden rounded-sm border-2 transition-all ${
-                    selected === p.id ? "border-primary ring-2 ring-primary/50 shadow-[0_0_15px_hsl(270_60%_55%/0.2)]" : "border-border hover:border-primary/40"
+                    selected === p.id ? "border-primary ring-2 ring-primary/50 shadow-[0_0_20px_hsl(270_60%_55%/0.3)]" : "border-border hover:border-primary/40"
                   }`}
                 >
                   <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
@@ -161,7 +183,7 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
                   value={field.value}
                   onChange={(e) => field.onChange(e.target.value)}
                   placeholder={field.placeholder}
-                  className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-primary focus:shadow-[0_0_10px_hsl(270_60%_55%/0.15)] transition-all"
+                  className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-primary focus:shadow-[0_0_15px_hsl(270_60%_55%/0.2)] transition-all"
                   required
                 />
               </div>
@@ -197,7 +219,7 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Enter your full delivery address"
               rows={3}
-              className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-primary focus:shadow-[0_0_10px_hsl(270_60%_55%/0.15)] transition-all resize-none"
+              className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-primary focus:shadow-[0_0_15px_hsl(270_60%_55%/0.2)] transition-all resize-none"
               required
             />
           </div>
@@ -214,11 +236,11 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
                   key={method}
                   type="button"
                   onClick={() => setPaymentMethod(method)}
-                  whileHover={{ scale: 1.02 }}
+                  whileHover={{ scale: 1.02, boxShadow: "0 0 25px hsl(270 60% 55% / 0.15)" }}
                   whileTap={{ scale: 0.98 }}
                   className={`flex flex-col items-center gap-3 p-6 border-2 transition-all ${
                     paymentMethod === method
-                      ? "border-primary bg-primary/10 shadow-[0_0_20px_hsl(270_60%_55%/0.15)]"
+                      ? "border-primary bg-primary/10 shadow-[0_0_25px_hsl(270_60%_55%/0.2)]"
                       : "border-border hover:border-primary/40"
                   }`}
                 >
@@ -272,11 +294,18 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
 
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.02, boxShadow: "0 0 30px hsl(270 60% 55% / 0.3)" }}
+            whileHover={{ scale: 1.02, boxShadow: "0 0 40px hsl(270 60% 55% / 0.4)" }}
             whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-primary text-primary-foreground font-oswald text-sm tracking-[0.3em] hover:bg-primary/90 transition-colors"
+            className="w-full py-4 bg-primary text-primary-foreground font-oswald text-sm tracking-[0.3em] hover:bg-primary/90 transition-all relative overflow-hidden group"
           >
-            {paymentMethod === "cod" ? "PLACE ORDER — CASH ON DELIVERY" : paymentMethod === "fonepay" ? "PLACE ORDER — FONEPAY" : "PLACE ORDER"}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-foreground/10 to-transparent"
+              animate={{ x: ["-100%", "100%"] }}
+              transition={{ duration: 2.5, repeat: Infinity, ease: "linear" }}
+            />
+            <span className="relative z-10">
+              {paymentMethod === "cod" ? "🕸️ PLACE ORDER — CASH ON DELIVERY" : paymentMethod === "fonepay" ? "🕸️ PLACE ORDER — FONEPAY" : "🕸️ PLACE ORDER"}
+            </span>
           </motion.button>
         </form>
       </div>
