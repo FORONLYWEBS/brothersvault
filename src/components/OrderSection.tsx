@@ -3,8 +3,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { getAllProducts } from "@/lib/products";
 import { addOrder } from "@/lib/store";
 import { toast } from "sonner";
-import { Check, Upload, CreditCard, Truck, ImageIcon } from "lucide-react";
+import { Check, Upload, CreditCard, Truck } from "lucide-react";
 import fonepayQr from "@/assets/fonepay-qr.jpg";
+import SpiderWebDecor from "./SpiderWebDecor";
+import FloatingParticles from "./FloatingParticles";
 
 interface OrderSectionProps {
   selectedProductId?: string | null;
@@ -74,23 +76,40 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
     });
 
     toast.success("Order placed successfully! We'll contact you soon.");
-    setName("");
-    setPhone("");
-    setAge("");
-    setSize("");
-    setAddress("");
-    setPaymentMethod("");
-    setPaymentProof("");
-    setProofFileName("");
-    setSelected(null);
+    setName(""); setPhone(""); setAge(""); setSize(""); setAddress("");
+    setPaymentMethod(""); setPaymentProof(""); setProofFileName(""); setSelected(null);
   };
 
   return (
-    <section id="order" className="py-20 px-4 md:px-8 bg-secondary">
-      <div className="max-w-4xl mx-auto">
+    <section id="order" className="relative py-20 px-4 md:px-8 bg-card overflow-hidden">
+      <FloatingParticles count={10} />
+      <SpiderWebDecor position="top-left" size={140} opacity={0.06} />
+
+      <div className="max-w-4xl mx-auto relative z-10">
         <div className="text-center mb-12">
-          <p className="text-xs tracking-[0.4em] font-oswald text-muted-foreground mb-2">PLACE YOUR</p>
-          <h2 className="text-4xl md:text-5xl font-bebas tracking-wider">ORDER NOW</h2>
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-xs tracking-[0.4em] font-oswald text-primary/70 mb-2"
+          >
+            PLACE YOUR
+          </motion.p>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-4xl md:text-5xl font-bebas tracking-wider"
+          >
+            ORDER NOW
+          </motion.h2>
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: 60 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto mt-3"
+          />
           <p className="mt-3 text-sm text-muted-foreground font-oswald tracking-wide">
             Select your T-shirt, fill in your details & choose payment
           </p>
@@ -99,88 +118,72 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* T-shirt selection */}
           <div>
-            <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-4">
-              SELECT T-SHIRT
-            </label>
+            <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-4">SELECT T-SHIRT</label>
             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
               {products.map((p) => (
-                <button
+                <motion.button
                   type="button"
                   key={p.id}
                   onClick={() => setSelected(p.id)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   className={`relative aspect-square overflow-hidden rounded-sm border-2 transition-all ${
-                    selected === p.id ? "border-foreground ring-2 ring-foreground" : "border-border hover:border-foreground/40"
+                    selected === p.id ? "border-primary ring-2 ring-primary/50 shadow-[0_0_15px_hsl(270_60%_55%/0.2)]" : "border-border hover:border-primary/40"
                   }`}
                 >
                   <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
                   {selected === p.id && (
-                    <div className="absolute inset-0 bg-foreground/30 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
                       <Check className="w-6 h-6 text-primary-foreground" />
                     </div>
                   )}
-                </button>
+                </motion.button>
               ))}
             </div>
             {selectedProduct && (
               <p className="mt-2 text-sm font-oswald tracking-wide">
-                Selected: <span className="font-semibold">{selectedProduct.name}</span> — ₹{selectedProduct.price}
+                Selected: <span className="font-semibold text-primary">{selectedProduct.name}</span> — ₹{selectedProduct.price}
               </p>
             )}
           </div>
 
           {/* Form fields */}
           <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">YOUR NAME</label>
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="Enter your full name"
-                className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">PHONE NUMBER</label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                placeholder="Enter your phone number"
-                className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">AGE</label>
-              <input
-                type="number"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                placeholder="Your age"
-                min="10"
-                max="80"
-                className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors"
-                required
-              />
-            </div>
+            {[
+              { label: "YOUR NAME", value: name, onChange: setName, type: "text", placeholder: "Enter your full name" },
+              { label: "PHONE NUMBER", value: phone, onChange: setPhone, type: "tel", placeholder: "Enter your phone number" },
+              { label: "AGE", value: age, onChange: setAge, type: "number", placeholder: "Your age" },
+            ].map((field) => (
+              <div key={field.label}>
+                <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">{field.label}</label>
+                <input
+                  type={field.type}
+                  value={field.value}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  placeholder={field.placeholder}
+                  className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-primary focus:shadow-[0_0_10px_hsl(270_60%_55%/0.15)] transition-all"
+                  required
+                />
+              </div>
+            ))}
             <div>
               <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">SIZE</label>
               <div className="flex gap-2">
                 {sizes.map((s) => (
-                  <button
+                  <motion.button
                     type="button"
                     key={s}
                     onClick={() => setSize(s)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     className={`flex-1 py-3 text-sm font-oswald tracking-wider border transition-all ${
                       size === s
-                        ? "bg-foreground text-primary-foreground border-foreground"
-                        : "bg-background border-border hover:border-foreground/50"
+                        ? "bg-primary text-primary-foreground border-primary shadow-[0_0_15px_hsl(270_60%_55%/0.3)]"
+                        : "bg-background border-border hover:border-primary/50"
                     }`}
                   >
                     {s}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
             </div>
@@ -194,7 +197,7 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
               onChange={(e) => setAddress(e.target.value)}
               placeholder="Enter your full delivery address"
               rows={3}
-              className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-foreground transition-colors resize-none"
+              className="w-full px-4 py-3 bg-background border border-border text-sm font-oswald focus:outline-none focus:border-primary focus:shadow-[0_0_10px_hsl(270_60%_55%/0.15)] transition-all resize-none"
               required
             />
           </div>
@@ -203,32 +206,27 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
           <div>
             <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-4">PAYMENT METHOD</label>
             <div className="grid grid-cols-2 gap-4">
-              <button
-                type="button"
-                onClick={() => setPaymentMethod("fonepay")}
-                className={`flex flex-col items-center gap-3 p-6 border-2 transition-all ${
-                  paymentMethod === "fonepay"
-                    ? "border-foreground bg-foreground/5"
-                    : "border-border hover:border-foreground/40"
-                }`}
-              >
-                <CreditCard className="w-8 h-8" />
-                <span className="font-oswald text-sm tracking-wider font-semibold">FONEPAY</span>
-                <span className="text-[11px] font-oswald text-muted-foreground tracking-wide">ONLINE PAYMENT</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setPaymentMethod("cod")}
-                className={`flex flex-col items-center gap-3 p-6 border-2 transition-all ${
-                  paymentMethod === "cod"
-                    ? "border-foreground bg-foreground/5"
-                    : "border-border hover:border-foreground/40"
-                }`}
-              >
-                <Truck className="w-8 h-8" />
-                <span className="font-oswald text-sm tracking-wider font-semibold">CASH ON DELIVERY</span>
-                <span className="text-[11px] font-oswald text-muted-foreground tracking-wide">PAY WHEN RECEIVED</span>
-              </button>
+              {[
+                { method: "fonepay" as const, icon: CreditCard, label: "FONEPAY", sub: "ONLINE PAYMENT" },
+                { method: "cod" as const, icon: Truck, label: "CASH ON DELIVERY", sub: "PAY WHEN RECEIVED" },
+              ].map(({ method, icon: Icon, label, sub }) => (
+                <motion.button
+                  key={method}
+                  type="button"
+                  onClick={() => setPaymentMethod(method)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`flex flex-col items-center gap-3 p-6 border-2 transition-all ${
+                    paymentMethod === method
+                      ? "border-primary bg-primary/10 shadow-[0_0_20px_hsl(270_60%_55%/0.15)]"
+                      : "border-border hover:border-primary/40"
+                  }`}
+                >
+                  <Icon className="w-8 h-8" />
+                  <span className="font-oswald text-sm tracking-wider font-semibold">{label}</span>
+                  <span className="text-[11px] font-oswald text-muted-foreground tracking-wide">{sub}</span>
+                </motion.button>
+              ))}
             </div>
           </div>
 
@@ -241,8 +239,8 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
                 exit={{ opacity: 0, height: 0 }}
                 className="space-y-6 overflow-hidden"
               >
-                <div className="flex flex-col items-center gap-4 p-6 border border-border bg-background">
-                  <p className="text-xs font-oswald tracking-[0.2em] text-muted-foreground">SCAN QR TO PAY</p>
+                <div className="flex flex-col items-center gap-4 p-6 border border-primary/20 bg-background rounded-sm">
+                  <p className="text-xs font-oswald tracking-[0.2em] text-primary/70">SCAN QR TO PAY</p>
                   <img src={fonepayQr} alt="Fonepay QR Code" className="w-56 h-56 object-contain rounded" />
                   <p className="text-xs font-oswald text-muted-foreground tracking-wide text-center">
                     Scan with your Fonepay-supported app and upload proof below
@@ -250,15 +248,13 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-3">
-                    UPLOAD PAYMENT PROOF
-                  </label>
-                  <label className="flex flex-col items-center gap-3 p-8 border-2 border-dashed border-border hover:border-foreground/50 cursor-pointer transition-colors bg-background">
+                  <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-3">UPLOAD PAYMENT PROOF</label>
+                  <label className="flex flex-col items-center gap-3 p-8 border-2 border-dashed border-primary/20 hover:border-primary/50 cursor-pointer transition-colors bg-background">
                     {paymentProof ? (
                       <>
                         <img src={paymentProof} alt="Payment proof" className="w-32 h-32 object-contain rounded" />
                         <p className="text-xs font-oswald tracking-wide text-muted-foreground">{proofFileName}</p>
-                        <p className="text-[11px] font-oswald tracking-wider text-foreground/60">CLICK TO CHANGE</p>
+                        <p className="text-[11px] font-oswald tracking-wider text-primary/60">CLICK TO CHANGE</p>
                       </>
                     ) : (
                       <>
@@ -267,12 +263,7 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
                         <p className="text-[11px] font-oswald text-muted-foreground tracking-wide">PNG, JPG — MAX 5MB</p>
                       </>
                     )}
-                    <input
-                      type="file"
-                      accept="image/*"
-                      onChange={handleProofUpload}
-                      className="hidden"
-                    />
+                    <input type="file" accept="image/*" onChange={handleProofUpload} className="hidden" />
                   </label>
                 </div>
               </motion.div>
@@ -281,9 +272,9 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
 
           <motion.button
             type="submit"
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ scale: 1.02, boxShadow: "0 0 30px hsl(270 60% 55% / 0.3)" }}
             whileTap={{ scale: 0.98 }}
-            className="w-full py-4 bg-foreground text-primary-foreground font-oswald text-sm tracking-[0.3em] hover:bg-foreground/90 transition-colors"
+            className="w-full py-4 bg-primary text-primary-foreground font-oswald text-sm tracking-[0.3em] hover:bg-primary/90 transition-colors"
           >
             {paymentMethod === "cod" ? "PLACE ORDER — CASH ON DELIVERY" : paymentMethod === "fonepay" ? "PLACE ORDER — FONEPAY" : "PLACE ORDER"}
           </motion.button>
