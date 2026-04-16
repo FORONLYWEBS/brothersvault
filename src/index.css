@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Creepster&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,74 +6,47 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 5%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 92%;
 
-    --card: 0 0% 98%;
-    --card-foreground: 0 0% 5%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 92%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 5%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 92%;
 
-    --primary: 0 0% 8%;
+    --primary: 270 60% 55%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 95%;
-    --secondary-foreground: 0 0% 10%;
+    --secondary: 0 0% 10%;
+    --secondary-foreground: 0 0% 85%;
 
-    --muted: 0 0% 95%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 50%;
 
-    --accent: 0 0% 95%;
-    --accent-foreground: 0 0% 8%;
+    --accent: 270 40% 18%;
+    --accent-foreground: 0 0% 92%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 8%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 270 60% 55%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 5%;
-    --sidebar-primary: 0 0% 8%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 95%;
-    --sidebar-accent-foreground: 0 0% 5%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 0 0% 8%;
-  }
-
-  .dark {
-    --background: 0 0% 3%;
-    --foreground: 0 0% 95%;
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 95%;
-    --popover: 0 0% 6%;
-    --popover-foreground: 0 0% 95%;
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 12%;
-    --secondary-foreground: 0 0% 90%;
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
-    --accent: 0 0% 12%;
-    --accent-foreground: 0 0% 95%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 95%;
     --sidebar-background: 0 0% 5%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 0 0% 95%;
-    --sidebar-primary-foreground: 0 0% 5%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 270 60% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
     --sidebar-accent: 0 0% 12%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 15%;
-    --sidebar-ring: 0 0% 95%;
+    --sidebar-accent-foreground: 0 0% 92%;
+    --sidebar-border: 0 0% 14%;
+    --sidebar-ring: 270 60% 55%;
+
+    --spider-glow: 270 80% 60%;
+    --web-color: 270 30% 30%;
   }
 }
 
@@ -102,6 +75,10 @@
     font-family: 'Bebas Neue', sans-serif;
   }
 
+  .font-creepster {
+    font-family: 'Creepster', sans-serif;
+  }
+
   @keyframes marquee {
     0% { transform: translateX(0); }
     100% { transform: translateX(-50%); }
@@ -109,5 +86,56 @@
 
   .animate-marquee {
     animation: marquee 20s linear infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-15px) rotate(2deg); }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% { opacity: 0.3; filter: blur(20px); }
+    50% { opacity: 0.6; filter: blur(30px); }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 4s ease-in-out infinite;
+  }
+
+  @keyframes web-sway {
+    0%, 100% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+  }
+
+  .animate-web-sway {
+    animation: web-sway 8s ease-in-out infinite;
+  }
+
+  @keyframes spider-descend {
+    0% { transform: translateY(-100%); }
+    60% { transform: translateY(0); }
+    70% { transform: translateY(-8px); }
+    80% { transform: translateY(0); }
+    90% { transform: translateY(-3px); }
+    100% { transform: translateY(0); }
+  }
+
+  .animate-spider-descend {
+    animation: spider-descend 3s ease-out forwards;
+  }
+
+  @keyframes flicker {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.8; }
+    25% { opacity: 0.95; }
+    75% { opacity: 0.85; }
+  }
+
+  .animate-flicker {
+    animation: flicker 3s ease-in-out infinite;
   }
 }
