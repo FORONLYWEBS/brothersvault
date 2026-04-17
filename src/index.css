@@ -64,6 +64,20 @@
     font-family: 'Bebas Neue', sans-serif;
     letter-spacing: 0.05em;
   }
+
+  /* Hide native cursor in favor of CursorAura on desktop only */
+  @media (hover: hover) and (pointer: fine) {
+    .haunted-cursor,
+    .haunted-cursor *,
+    .haunted-cursor a,
+    .haunted-cursor button,
+    .haunted-cursor [role="button"],
+    .haunted-cursor input,
+    .haunted-cursor textarea,
+    .haunted-cursor select {
+      cursor: none;
+    }
+  }
 }
 
 @layer utilities {

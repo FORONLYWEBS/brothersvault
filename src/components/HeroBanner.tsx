@@ -3,6 +3,7 @@ import heroMan from "@/assets/hero-man.jpg";
 import SpiderWebDecor from "./SpiderWebDecor";
 import FloatingParticles from "./FloatingParticles";
 import GhostFog from "./GhostFog";
+import HauntedScene from "./three/HauntedScene";
 
 const HeroBanner = () => {
   return (
@@ -17,6 +18,9 @@ const HeroBanner = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5" />
       </div>
+
+      {/* Immersive 3D haunted layer */}
+      <HauntedScene />
 
       <GhostFog />
 
