@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAllProducts } from "@/lib/products";
 import { addOrder } from "@/lib/store";
@@ -15,9 +16,11 @@ interface OrderSectionProps {
 
 const sizes = ["S", "M", "L", "XL", "XXL"];
 
-const OrderSection = ({ selectedProductId }: OrderSectionProps) => {
+const OrderSection = ({ selectedProductId }: OrderSectionProps = {}) => {
   const products = getAllProducts();
-  const [selected, setSelected] = useState<string | null>(selectedProductId || null);
+  const [searchParams] = useSearchParams();
+  const initialProduct = selectedProductId || searchParams.get("product");
+  const [selected, setSelected] = useState<string | null>(initialProduct || null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [age, setAge] = useState("");
