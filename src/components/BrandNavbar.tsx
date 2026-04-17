@@ -7,7 +7,6 @@ import logo from "@/assets/logo.jpg";
 const navLinks = [
   { label: "HOME", href: "#home" },
   { label: "COLLECTION", href: "#collection" },
-  { label: "ORDER", href: "#order" },
 ];
 
 const BrandNavbar = () => {
@@ -42,13 +41,21 @@ const BrandNavbar = () => {
           />
         </a>
 
-        <Link
-          to="/admin"
-          className="flex items-center gap-1.5 text-xs font-oswald tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors font-medium"
-        >
-          <ShieldCheck className="w-4 h-4" />
-          <span className="hidden sm:inline">ADMIN</span>
-        </Link>
+        <div className="flex items-center gap-3 sm:gap-5">
+          <Link
+            to="/order"
+            className="px-3 py-1.5 rounded-full text-[10px] sm:text-xs font-oswald tracking-[0.2em] text-foreground bg-primary/15 border border-primary/50 hover:bg-primary/25 hover:border-primary hover:shadow-[0_0_15px_hsl(270_80%_60%/0.5)] transition-all font-medium"
+          >
+            ORDER NOW
+          </Link>
+          <Link
+            to="/admin"
+            className="flex items-center gap-1.5 text-xs font-oswald tracking-[0.15em] text-muted-foreground hover:text-primary transition-colors font-medium"
+          >
+            <ShieldCheck className="w-4 h-4" />
+            <span className="hidden sm:inline">ADMIN</span>
+          </Link>
+        </div>
       </div>
 
       {open && (
