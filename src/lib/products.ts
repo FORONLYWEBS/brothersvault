@@ -10,15 +10,15 @@ import tshirt7 from "@/assets/tshirt-7.jpg";
 import { type Product, getCustomProducts } from "./store";
 
 export const defaultProducts: Product[] = [
-  { id: "1", name: "Brotherhood Classic Tee", price: 1499, image: tshirtBrotherhood, tag: "BESTSELLER" },
+  { id: "1", name: "Xypher Classic Tee", price: 1499, image: tshirtBrotherhood, tag: "BESTSELLER" },
   { id: "2", name: "Barcelona Legacy Tee", price: 1799, image: tshirtBarcelona, tag: "NEW" },
-  { id: "3", name: "Vault Oversized Black", price: 1399, image: tshirt1 },
-  { id: "4", name: "Vault Minimal Green", price: 1549, image: tshirt2 },
+  { id: "3", name: "Xypher Oversized Black", price: 1399, image: tshirt1 },
+  { id: "4", name: "Xypher Minimal Green", price: 1549, image: tshirt2 },
   { id: "5", name: "Y2K Graphic Streetwear", price: 1699, image: tshirt3, tag: "HOT" },
-  { id: "6", name: "Photo Print Vault Tee", price: 1449, image: tshirt4 },
+  { id: "6", name: "Photo Print Xypher Tee", price: 1449, image: tshirt4 },
   { id: "7", name: "Planet Slogan Tee", price: 1349, image: tshirt5 },
-  { id: "8", name: "Casual Vault Fit", price: 1599, image: tshirt6 },
-  { id: "9", name: "Acid Wash Vault Tee", price: 1899, image: tshirt7, tag: "LIMITED" },
+  { id: "8", name: "Casual Xypher Fit", price: 1599, image: tshirt6 },
+  { id: "9", name: "Acid Wash Xypher Tee", price: 1899, image: tshirt7, tag: "LIMITED" },
 ];
 
 export function getAllProducts(): Product[] {

@@ -7,7 +7,7 @@ const WHISPERS = [
   "🕷️ something stirs in the dark",
   "🌑 step closer...",
   "💀 you've been chosen",
-  "🕯️ the brotherhood whispers",
+  "🕯️ xypher whispers",
 ];
 
 /**

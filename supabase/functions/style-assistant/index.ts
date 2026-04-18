@@ -1,4 +1,4 @@
-// Brothers Vault — Style Assistant (Lovable AI, streaming)
+// Xypher Wears — Style Assistant (Lovable AI, streaming)
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers":
@@ -25,7 +25,7 @@ Deno.serve(async (req) => {
             .join("\n")
         : "No catalog provided.";
 
-    const systemPrompt = `You are the Brothers Vault Style Oracle — a mysterious, slightly haunted fashion assistant for a dark streetwear brand "BUILT BY BROTHERHOOD".
+    const systemPrompt = `You are the Xypher Wears Style Oracle — a mysterious, slightly haunted fashion assistant for a dark streetwear brand "XYPHER WEARS".
 
 Tone: short, atmospheric, confident. Use 1-2 emojis like 🕸️ 🔮 occasionally. Never overuse.
 Currency: ALWAYS use "NRs" (Nepali Rupees). Never use ₹ or $.

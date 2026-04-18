@@ -74,8 +74,8 @@ const MysteryIntro = () => {
             <p className="text-[10px] tracking-[0.5em] font-oswald text-primary/70 mb-2">
               ENTER THE
             </p>
-            <h1 className="text-6xl md:text-8xl font-bebas tracking-[0.15em] bg-gradient-to-b from-foreground to-primary/60 bg-clip-text text-transparent">
-              VAULT
+            <h1 className="text-5xl md:text-7xl font-bebas tracking-[0.15em] bg-gradient-to-b from-foreground to-primary/60 bg-clip-text text-transparent">
+              XYPHER WEARS
             </h1>
             <motion.div
               className="mt-3 h-px bg-gradient-to-r from-transparent via-primary to-transparent mx-auto"

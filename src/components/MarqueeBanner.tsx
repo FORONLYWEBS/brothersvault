@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-const items = ["FREE SHIPPING", "COD AVAILABLE", "PREMIUM QUALITY", "BUILT BY BROTHERHOOD", "EXCLUSIVE DROPS", "DARK AESTHETIC"];
+const items = ["FREE SHIPPING", "COD AVAILABLE", "PREMIUM QUALITY", "XYPHER WEARS", "EXCLUSIVE DROPS", "DARK AESTHETIC"];
 
 const MarqueeBanner = () => (
   <div className="relative bg-primary/5 border-y border-primary/15 py-3 overflow-hidden">
