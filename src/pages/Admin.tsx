@@ -173,7 +173,7 @@ const Admin = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">PRICE (₹)</label>
+                  <label className="block text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-2">PRICE (NRs)</label>
                   <input
                     type="number"
                     value={newPrice}
@@ -244,7 +244,7 @@ const Admin = () => {
               <div key={p.id} className="relative group border border-border p-2">
                 <img src={p.image} alt={p.name} className="w-full aspect-square object-cover rounded-sm" />
                 <p className="text-xs font-oswald tracking-wide mt-1 truncate">{p.name}</p>
-                <p className="text-xs text-muted-foreground font-oswald">₹{p.price}</p>
+                <p className="text-xs text-muted-foreground font-oswald">NRs {p.price}</p>
                 <button
                   onClick={() => handleDeleteProduct(p.id)}
                   className="absolute top-1 right-1 bg-destructive text-destructive-foreground p-1 rounded-sm opacity-0 group-hover:opacity-100 transition-opacity"

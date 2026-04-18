@@ -82,7 +82,7 @@ const ProductGrid = ({ onOrder }: ProductGridProps) => {
             </div>
             <div className="mt-3 space-y-1">
               <p className="text-sm font-medium font-oswald tracking-wide truncate">{product.name}</p>
-              <p className="text-sm text-primary/70 font-oswald">₹{product.price}</p>
+              <p className="text-sm text-primary/70 font-oswald">NRs {product.price}</p>
             </div>
           </motion.div>
         ))}

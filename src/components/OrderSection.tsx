@@ -167,7 +167,7 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps = {}) => {
             </div>
             {selectedProduct && (
               <p className="mt-2 text-sm font-oswald tracking-wide">
-                Selected: <span className="font-semibold text-primary">{selectedProduct.name}</span> — ₹{selectedProduct.price}
+                Selected: <span className="font-semibold text-primary">{selectedProduct.name}</span> — NRs {selectedProduct.price}
               </p>
             )}
           </div>
