@@ -5,6 +5,7 @@ import ProductGrid from "@/components/ProductGrid";
 import BrandFooter from "@/components/BrandFooter";
 import CrawlingSpider from "@/components/CrawlingSpider";
 import CursorAura from "@/components/CursorAura";
+import StyleAssistant from "@/components/StyleAssistant";
 import { useNavigate } from "react-router-dom";
 
 const Index = () => {
@@ -24,6 +25,7 @@ const Index = () => {
       <ProductGrid onOrder={handleOrder} />
       <MarqueeBanner />
       <BrandFooter />
+      <StyleAssistant />
     </div>
   );
 };
