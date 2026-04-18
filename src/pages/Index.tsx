@@ -32,6 +32,7 @@ const Index = () => {
       <ProductGrid onOrder={handleOrder} />
       <MarqueeBanner />
       <BrandFooter />
+      <Whispers />
       <StyleAssistant />
     </div>
   );
