@@ -12,7 +12,7 @@ const HeroBanner = () => {
       <div className="absolute inset-0">
         <img
           src={heroMan}
-          alt="Brothers Vault"
+          alt="Xypher Wears"
           className="w-full h-full object-cover opacity-15 object-bottom"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/60 to-background" />
@@ -64,7 +64,7 @@ const HeroBanner = () => {
             animate={{ opacity: [1, 0.7, 1, 0.9, 1] }}
             transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           >
-            BROTHERS
+            XYPHER
           </motion.span>
           <br />
           <motion.span
@@ -72,7 +72,7 @@ const HeroBanner = () => {
             animate={{ opacity: [0.9, 1, 0.8, 1, 0.9] }}
             transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
           >
-            VAULT
+            WEARS
           </motion.span>
         </motion.h1>
 
@@ -82,7 +82,7 @@ const HeroBanner = () => {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="mt-6 text-sm md:text-base tracking-[0.3em] font-oswald text-muted-foreground"
         >
-          BUILT BY BROTHERHOOD
+          WEAR THE MYSTERY
         </motion.p>
 
         <motion.a

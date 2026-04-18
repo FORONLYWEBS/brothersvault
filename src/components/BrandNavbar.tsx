@@ -35,7 +35,7 @@ const BrandNavbar = () => {
         <a href="#home" className="absolute left-1/2 -translate-x-1/2">
           <motion.img
             src={logo}
-            alt="Brothers Vault"
+            alt="Xypher Wears"
             className="h-10 w-auto object-contain invert"
             whileHover={{ scale: 1.1, filter: "drop-shadow(0 0 8px hsl(270 60% 55% / 0.5))" }}
           />
