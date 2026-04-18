@@ -9,6 +9,7 @@ import StyleAssistant from "@/components/StyleAssistant";
 import MysteryIntro from "@/components/MysteryIntro";
 import MysterySpotlight from "@/components/MysterySpotlight";
 import MysteryVignette from "@/components/MysteryVignette";
+import SecretSpots from "@/components/SecretSpots";
 import Whispers from "@/components/Whispers";
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +24,9 @@ const Index = () => {
     <div className="min-h-screen bg-background text-foreground haunted-cursor">
       <MysteryIntro />
       <MysteryVignette />
-      <MysterySpotlight />
-      <CursorAura />
+        <MysterySpotlight />
+        <SecretSpots />
+        <CursorAura />
       <CrawlingSpider />
       <BrandNavbar />
       <HeroBanner />
