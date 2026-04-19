@@ -3,7 +3,6 @@ import { ArrowLeft } from "lucide-react";
 import OrderSection from "@/components/OrderSection";
 import BrandFooter from "@/components/BrandFooter";
 import CursorAura from "@/components/CursorAura";
-import StyleAssistant from "@/components/StyleAssistant";
 
 const Order = () => {
   return (
@@ -24,7 +23,6 @@ const Order = () => {
 
       <OrderSection />
       <BrandFooter />
-      <StyleAssistant />
     </div>
   );
 };

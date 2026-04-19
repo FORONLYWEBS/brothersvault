@@ -5,7 +5,6 @@ import ProductGrid from "@/components/ProductGrid";
 import BrandFooter from "@/components/BrandFooter";
 import CrawlingSpider from "@/components/CrawlingSpider";
 import CursorAura from "@/components/CursorAura";
-import StyleAssistant from "@/components/StyleAssistant";
 import MysteryIntro from "@/components/MysteryIntro";
 import MysterySpotlight from "@/components/MysterySpotlight";
 import MysteryVignette from "@/components/MysteryVignette";
@@ -35,7 +34,6 @@ const Index = () => {
       <MarqueeBanner />
       <BrandFooter />
       <Whispers />
-      <StyleAssistant />
     </div>
   );
 };
