@@ -32,12 +32,12 @@ const BrandNavbar = () => {
         </div>
 
         <a href="#home" className="absolute left-1/2 -translate-x-1/2">
-          <motion.img
-            src={logo}
-            alt="Xypher Wears"
-            className="h-10 w-auto object-contain invert"
-            whileHover={{ scale: 1.1, filter: "drop-shadow(0 0 8px hsl(270 60% 55% / 0.5))" }}
-          />
+          <motion.span
+            className="text-base sm:text-lg font-bebas tracking-[0.3em] bg-gradient-to-b from-foreground to-primary/60 bg-clip-text text-transparent"
+            whileHover={{ scale: 1.05, filter: "drop-shadow(0 0 8px hsl(270 60% 55% / 0.5))" }}
+          >
+            XYPHER WEARS
+          </motion.span>
         </a>
 
         <div className="flex items-center gap-3 sm:gap-5">
