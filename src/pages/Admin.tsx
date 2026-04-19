@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCustomProduct, type Order, type Product } from "@/lib/store";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X } from "lucide-react";
-import logo from "@/assets/logo.jpg";
+
 
 const Admin = () => {
   const [authenticated, setAuthenticated] = useState(false);
@@ -81,7 +81,7 @@ const Admin = () => {
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="w-full max-w-sm space-y-8">
           <div className="text-center">
-            <img src={logo} alt="Xypher Wears" className="h-12 mx-auto mb-6" />
+            <h2 className="text-3xl font-bebas tracking-[0.3em] bg-gradient-to-b from-foreground to-primary/60 bg-clip-text text-transparent mb-6">XYPHER WEARS</h2>
             <Lock className="w-8 h-8 mx-auto text-muted-foreground mb-4" />
             <h1 className="text-3xl font-bebas tracking-wider">ADMIN ACCESS</h1>
             <p className="text-xs text-muted-foreground font-oswald tracking-wider mt-1">AUTHORIZED PERSONNEL ONLY</p>

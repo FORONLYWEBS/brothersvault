@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import logo from "@/assets/logo.jpg";
 import SpiderWebDecor from "./SpiderWebDecor";
 
 const BrandFooter = () => (
@@ -9,12 +8,12 @@ const BrandFooter = () => (
 
     <div className="max-w-7xl mx-auto relative z-10">
       <div className="flex flex-col items-center text-center gap-6">
-        <motion.img
-          src={logo}
-          alt="Xypher Wears"
-          className="h-14 w-auto invert"
-          whileHover={{ scale: 1.1, filter: "drop-shadow(0 0 12px hsl(270 60% 55% / 0.4))" }}
-        />
+        <motion.h2
+          className="text-3xl md:text-4xl font-bebas tracking-[0.3em] bg-gradient-to-b from-foreground to-primary/60 bg-clip-text text-transparent"
+          whileHover={{ scale: 1.05, filter: "drop-shadow(0 0 12px hsl(270 60% 55% / 0.4))" }}
+        >
+          XYPHER WEARS
+        </motion.h2>
         <p className="text-xs tracking-[0.35em] font-oswald text-muted-foreground">
           XYPHER WEARS • EST. 2025
         </p>
