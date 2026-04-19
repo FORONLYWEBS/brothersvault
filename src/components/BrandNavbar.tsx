@@ -2,7 +2,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "@/assets/logo.jpg";
 
 const navLinks = [
   { label: "HOME", href: "#home" },
