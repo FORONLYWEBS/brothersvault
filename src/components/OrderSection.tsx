@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { getAllProducts } from "@/lib/products";
-import { addOrder } from "@/lib/store";
+import { addOrder, type Product } from "@/lib/store";
 import { toast } from "sonner";
 import { Check, Upload, CreditCard, Truck } from "lucide-react";
 import fonepayQr from "@/assets/fonepay-qr.jpg";
@@ -17,7 +17,10 @@ interface OrderSectionProps {
 const sizes = ["S", "M", "L", "XL", "XXL"];
 
 const OrderSection = ({ selectedProductId }: OrderSectionProps = {}) => {
-  const products = getAllProducts();
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    getAllProducts().then(setProducts);
+  }, []);
   const [searchParams] = useSearchParams();
   const initialProduct = selectedProductId || searchParams.get("product");
   const [selected, setSelected] = useState<string | null>(initialProduct || null);
@@ -47,7 +50,9 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps = {}) => {
     reader.readAsDataURL(file);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selected || !name || !phone || !age || !size || !paymentMethod) {
       toast.error("Please fill all fields, select a T-shirt, and choose payment method");
@@ -67,7 +72,8 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps = {}) => {
     }
 
     const product = products.find((p) => p.id === selected)!;
-    addOrder({
+    setSubmitting(true);
+    const result = await addOrder({
       productName: product.name,
       productImage: product.image,
       name,
@@ -78,6 +84,12 @@ const OrderSection = ({ selectedProductId }: OrderSectionProps = {}) => {
       paymentMethod,
       paymentProof: paymentMethod === "fonepay" ? paymentProof : undefined,
     });
+    setSubmitting(false);
+
+    if (!result) {
+      toast.error("Could not place order. Please try again.");
+      return;
+    }
 
     toast.success("Order placed successfully! We'll contact you soon.");
     setName(""); setPhone(""); setAge(""); setSize(""); setAddress("");

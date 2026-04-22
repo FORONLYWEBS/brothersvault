@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { getAllProducts } from "@/lib/products";
+import type { Product } from "@/lib/store";
 import SpiderWebDecor from "./SpiderWebDecor";
 import FloatingParticles from "./FloatingParticles";
 import GhostFog from "./GhostFog";
@@ -9,7 +11,10 @@ interface ProductGridProps {
 }
 
 const ProductGrid = ({ onOrder }: ProductGridProps) => {
-  const products = getAllProducts();
+  const [products, setProducts] = useState<Product[]>([]);
+  useEffect(() => {
+    getAllProducts().then(setProducts);
+  }, []);
   return (
     <section id="collection" className="relative py-20 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden">
       <GhostFog />

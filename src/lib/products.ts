@@ -21,9 +21,10 @@ export const defaultProducts: Product[] = [
   { id: "9", name: "Acid Wash Xypher Tee", price: 1899, image: tshirt7, tag: "LIMITED" },
 ];
 
-export function getAllProducts(): Product[] {
-  return [...defaultProducts, ...getCustomProducts()];
+export async function getAllProducts(): Promise<Product[]> {
+  const custom = await getCustomProducts();
+  return [...defaultProducts, ...custom];
 }
 
-// Keep backward compat — components that import `products` will get all
+// Backward-compat synchronous default list
 export const products = defaultProducts;
