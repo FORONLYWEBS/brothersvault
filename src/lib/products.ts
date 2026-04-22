@@ -7,7 +7,7 @@ import tshirt4 from "@/assets/tshirt-4.jpg";
 import tshirt5 from "@/assets/tshirt-5.jpg";
 import tshirt6 from "@/assets/tshirt-6.jpg";
 import tshirt7 from "@/assets/tshirt-7.jpg";
-import { type Product, getCustomProducts } from "./store";
+import { type Product, getCustomProducts, getHiddenProductIds } from "./store";
 
 export const defaultProducts: Product[] = [
   { id: "1", name: "Xypher Classic Tee", price: 1499, image: tshirtBrotherhood, tag: "BESTSELLER" },
@@ -23,8 +23,13 @@ export const defaultProducts: Product[] = [
 
 export async function getAllProducts(): Promise<Product[]> {
   try {
-    const custom = await getCustomProducts();
-    return [...defaultProducts, ...(Array.isArray(custom) ? custom : [])];
+    const [custom, hidden] = await Promise.all([
+      getCustomProducts(),
+      getHiddenProductIds(),
+    ]);
+    const hiddenSet = new Set(Array.isArray(hidden) ? hidden : []);
+    const visibleDefaults = defaultProducts.filter((p) => !hiddenSet.has(p.id));
+    return [...visibleDefaults, ...(Array.isArray(custom) ? custom : [])];
   } catch (e) {
     console.error("getAllProducts error", e);
     return [...defaultProducts];
