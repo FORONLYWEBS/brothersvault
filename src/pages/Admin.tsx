@@ -19,10 +19,17 @@ const Admin = () => {
   const [newImageName, setNewImageName] = useState("");
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
 
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     if (authenticated) {
-      setOrders(getOrders().sort((a, b) => b.timestamp - a.timestamp));
-      setCustomProducts(getCustomProducts());
+      setLoading(true);
+      Promise.all([getOrders(), getCustomProducts()])
+        .then(([o, p]) => {
+          setOrders(o);
+          setCustomProducts(p);
+        })
+        .finally(() => setLoading(false));
     }
   }, [authenticated]);
 
@@ -36,8 +43,8 @@ const Admin = () => {
     }
   };
 
-  const handleDelete = (id: string) => {
-    deleteOrder(id);
+  const handleDelete = async (id: string) => {
+    await deleteOrder(id);
     setOrders((prev) => prev.filter((o) => o.id !== id));
   };
 
@@ -53,15 +60,16 @@ const Admin = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleAddProduct = (e: React.FormEvent) => {
+  const handleAddProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newName || !newPrice || !newImage) return;
-    const product = addCustomProduct({
+    const product = await addCustomProduct({
       name: newName,
       price: Number(newPrice),
       image: newImage,
       tag: newTag || undefined,
     });
+    if (!product) return;
     setCustomProducts((prev) => [...prev, product]);
     setNewName("");
     setNewPrice("");
@@ -71,8 +79,8 @@ const Admin = () => {
     setShowAddProduct(false);
   };
 
-  const handleDeleteProduct = (id: string) => {
-    deleteCustomProduct(id);
+  const handleDeleteProduct = async (id: string) => {
+    await deleteCustomProduct(id);
     setCustomProducts((prev) => prev.filter((p) => p.id !== id));
   };
 
