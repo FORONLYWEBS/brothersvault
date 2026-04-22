@@ -13,7 +13,7 @@ interface ProductGridProps {
 const ProductGrid = ({ onOrder }: ProductGridProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   useEffect(() => {
-    getAllProducts().then(setProducts);
+    getAllProducts().then((p) => setProducts(Array.isArray(p) ? p : []));
   }, []);
   return (
     <section id="collection" className="relative py-20 px-4 md:px-8 max-w-7xl mx-auto overflow-hidden">
