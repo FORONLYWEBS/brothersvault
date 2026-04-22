@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCustomProduct, type Order, type Product } from "@/lib/store";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X } from "lucide-react";
+import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X, RefreshCw } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 
 const Admin = () => {
@@ -21,16 +22,37 @@ const Admin = () => {
 
   const [loading, setLoading] = useState(false);
 
+  const refresh = async () => {
+    const [o, p] = await Promise.all([getOrders(), getCustomProducts()]);
+    setOrders(o);
+    setCustomProducts(p);
+  };
+
   useEffect(() => {
-    if (authenticated) {
-      setLoading(true);
-      Promise.all([getOrders(), getCustomProducts()])
-        .then(([o, p]) => {
-          setOrders(o);
-          setCustomProducts(p);
-        })
-        .finally(() => setLoading(false));
-    }
+    if (!authenticated) return;
+
+    setLoading(true);
+    refresh().finally(() => setLoading(false));
+
+    // Live updates: any new/deleted order on any device shows up instantly
+    const channel = supabase
+      .channel("admin-orders")
+      .on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => {
+        getOrders().then(setOrders);
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "custom_products" }, () => {
+        getCustomProducts().then(setCustomProducts);
+      })
+      .subscribe();
+
+    // Refetch when admin returns to the tab
+    const onFocus = () => refresh();
+    window.addEventListener("focus", onFocus);
+
+    return () => {
+      supabase.removeChannel(channel);
+      window.removeEventListener("focus", onFocus);
+    };
   }, [authenticated]);
 
   const handleLogin = (e: React.FormEvent) => {
@@ -150,6 +172,13 @@ const Admin = () => {
           </button>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => refresh()}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            title="Refresh"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </button>
           <Package className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm font-oswald tracking-wider text-muted-foreground">
             {orders.length} ORDERS
