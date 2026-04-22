@@ -288,6 +288,44 @@ const Admin = () => {
         </div>
       )}
 
+      {/* Default Products Section - Hide/Show */}
+      <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 border-b border-border">
+        <p className="text-xs font-oswald tracking-[0.2em] text-muted-foreground mb-4">
+          DEFAULT T-SHIRTS — HIDE FROM STORE
+        </p>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {defaultProducts.map((p) => {
+            const isHidden = hiddenIds.includes(p.id);
+            return (
+              <div
+                key={p.id}
+                className={`relative group border p-2 transition-opacity ${
+                  isHidden ? "border-destructive/40 opacity-50" : "border-border"
+                }`}
+              >
+                <img src={p.image} alt={p.name} className="w-full aspect-square object-cover rounded-sm" />
+                <p className="text-xs font-oswald tracking-wide mt-1 truncate">{p.name}</p>
+                <p className="text-xs text-muted-foreground font-oswald">NRs {p.price}</p>
+                {isHidden && (
+                  <p className="text-[10px] font-oswald tracking-wider text-destructive mt-0.5">HIDDEN</p>
+                )}
+                <button
+                  onClick={() => handleToggleHidden(p.id)}
+                  className={`absolute top-1 right-1 p-1 rounded-sm transition-opacity ${
+                    isHidden
+                      ? "bg-foreground text-primary-foreground opacity-100"
+                      : "bg-destructive text-destructive-foreground opacity-0 group-hover:opacity-100"
+                  }`}
+                  title={isHidden ? "Show in store" : "Hide from store"}
+                >
+                  {isHidden ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                </button>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Custom Products Section */}
       {customProducts.length > 0 && (
         <div className="max-w-6xl mx-auto px-4 md:px-8 py-6 border-b border-border">
