@@ -172,6 +172,13 @@ const Admin = () => {
           </button>
         </div>
         <div className="flex items-center gap-3">
+          <button
+            onClick={() => refresh()}
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            title="Refresh"
+          >
+            <RefreshCw className={`w-4 h-4 ${loading ? "animate-spin" : ""}`} />
+          </button>
           <Package className="w-4 h-4 text-muted-foreground" />
           <span className="text-sm font-oswald tracking-wider text-muted-foreground">
             {orders.length} ORDERS
