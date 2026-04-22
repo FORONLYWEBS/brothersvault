@@ -3,7 +3,7 @@ import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCust
 import { defaultProducts } from "@/lib/products";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X, RefreshCw, EyeOff, Eye } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
+import { supabase } from "@/integrations/supabase/safeClient";
 
 
 const Admin = () => {
