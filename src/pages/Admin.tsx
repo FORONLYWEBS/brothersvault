@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCustomProduct, type Order, type Product } from "@/lib/store";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X } from "lucide-react";
+import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X, RefreshCw } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 
 const Admin = () => {
