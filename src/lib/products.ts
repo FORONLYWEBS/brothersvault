@@ -22,8 +22,13 @@ export const defaultProducts: Product[] = [
 ];
 
 export async function getAllProducts(): Promise<Product[]> {
-  const custom = await getCustomProducts();
-  return [...defaultProducts, ...custom];
+  try {
+    const custom = await getCustomProducts();
+    return [...defaultProducts, ...(Array.isArray(custom) ? custom : [])];
+  } catch (e) {
+    console.error("getAllProducts error", e);
+    return [...defaultProducts];
+  }
 }
 
 // Backward-compat synchronous default list
