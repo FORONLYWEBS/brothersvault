@@ -41,6 +41,21 @@ export type Database = {
         }
         Relationships: []
       }
+      hidden_products: {
+        Row: {
+          created_at: string
+          product_id: string
+        }
+        Insert: {
+          created_at?: string
+          product_id: string
+        }
+        Update: {
+          created_at?: string
+          product_id?: string
+        }
+        Relationships: []
+      }
       orders: {
         Row: {
           address: string
