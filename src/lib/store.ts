@@ -136,3 +136,29 @@ export async function deleteCustomProduct(id: string): Promise<void> {
   const { error } = await supabase.from("custom_products").delete().eq("id", id);
   if (error) console.error("deleteCustomProduct error", error);
 }
+
+// ===== Hidden default products (cloud) =====
+
+export async function getHiddenProductIds(): Promise<string[]> {
+  const { data, error } = await supabase.from("hidden_products").select("product_id");
+  if (error) {
+    console.error("getHiddenProductIds error", error);
+    return [];
+  }
+  return (data || []).map((r: any) => r.product_id);
+}
+
+export async function hideDefaultProduct(productId: string): Promise<void> {
+  const { error } = await supabase
+    .from("hidden_products")
+    .insert({ product_id: productId });
+  if (error) console.error("hideDefaultProduct error", error);
+}
+
+export async function unhideDefaultProduct(productId: string): Promise<void> {
+  const { error } = await supabase
+    .from("hidden_products")
+    .delete()
+    .eq("product_id", productId);
+  if (error) console.error("unhideDefaultProduct error", error);
+}
