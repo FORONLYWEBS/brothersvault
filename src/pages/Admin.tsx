@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCustomProduct, type Order, type Product } from "@/lib/store";
+import { getOrders, deleteOrder, addCustomProduct, getCustomProducts, deleteCustomProduct, getHiddenProductIds, hideDefaultProduct, unhideDefaultProduct, type Order, type Product } from "@/lib/store";
+import { defaultProducts } from "@/lib/products";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X, RefreshCw } from "lucide-react";
+import { ArrowLeft, Lock, Package, Trash2, CreditCard, Truck, ImageIcon, Plus, Upload, X, RefreshCw, EyeOff, Eye } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 
 
@@ -19,13 +20,15 @@ const Admin = () => {
   const [newImage, setNewImage] = useState("");
   const [newImageName, setNewImageName] = useState("");
   const [customProducts, setCustomProducts] = useState<Product[]>([]);
+  const [hiddenIds, setHiddenIds] = useState<string[]>([]);
 
   const [loading, setLoading] = useState(false);
 
   const refresh = async () => {
-    const [o, p] = await Promise.all([getOrders(), getCustomProducts()]);
+    const [o, p, h] = await Promise.all([getOrders(), getCustomProducts(), getHiddenProductIds()]);
     setOrders(o);
     setCustomProducts(p);
+    setHiddenIds(h);
   };
 
   useEffect(() => {
@@ -42,6 +45,9 @@ const Admin = () => {
       })
       .on("postgres_changes", { event: "*", schema: "public", table: "custom_products" }, () => {
         getCustomProducts().then(setCustomProducts);
+      })
+      .on("postgres_changes", { event: "*", schema: "public", table: "hidden_products" }, () => {
+        getHiddenProductIds().then(setHiddenIds);
       })
       .subscribe();
 
@@ -104,6 +110,16 @@ const Admin = () => {
   const handleDeleteProduct = async (id: string) => {
     await deleteCustomProduct(id);
     setCustomProducts((prev) => prev.filter((p) => p.id !== id));
+  };
+
+  const handleToggleHidden = async (id: string) => {
+    if (hiddenIds.includes(id)) {
+      await unhideDefaultProduct(id);
+      setHiddenIds((prev) => prev.filter((x) => x !== id));
+    } else {
+      await hideDefaultProduct(id);
+      setHiddenIds((prev) => [...prev, id]);
+    }
   };
 
   if (!authenticated) {
