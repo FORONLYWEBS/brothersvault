@@ -1,3 +1,5 @@
+import { supabase } from "@/integrations/supabase/client";
+
 export interface Order {
   id: string;
   productName: string;
@@ -8,33 +10,8 @@ export interface Order {
   size: string;
   address: string;
   paymentMethod: "fonepay" | "cod";
-  paymentProof?: string; // base64 data URL for fonepay proof
+  paymentProof?: string;
   timestamp: number;
-}
-
-export function getOrders(): Order[] {
-  try {
-    return JSON.parse(localStorage.getItem("bv_orders") || "[]");
-  } catch {
-    return [];
-  }
-}
-
-export function addOrder(order: Omit<Order, "id" | "timestamp">): Order {
-  const orders = getOrders();
-  const newOrder: Order = {
-    ...order,
-    id: crypto.randomUUID(),
-    timestamp: Date.now(),
-  };
-  orders.push(newOrder);
-  localStorage.setItem("bv_orders", JSON.stringify(orders));
-  return newOrder;
-}
-
-export function deleteOrder(id: string): void {
-  const orders = getOrders().filter((o) => o.id !== id);
-  localStorage.setItem("bv_orders", JSON.stringify(orders));
 }
 
 export interface Product {
@@ -45,24 +22,117 @@ export interface Product {
   tag?: string;
 }
 
-// Custom products (admin-added)
-export function getCustomProducts(): Product[] {
-  try {
-    return JSON.parse(localStorage.getItem("bv_custom_products") || "[]");
-  } catch {
+// ===== Orders (cloud) =====
+
+export async function getOrders(): Promise<Order[]> {
+  const { data, error } = await supabase
+    .from("orders")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) {
+    console.error("getOrders error", error);
     return [];
   }
+  return (data || []).map((r: any) => ({
+    id: r.id,
+    productName: r.product_name,
+    productImage: r.product_image,
+    name: r.customer_name,
+    phone: r.phone,
+    age: r.age,
+    size: r.size,
+    address: r.address,
+    paymentMethod: r.payment_method,
+    paymentProof: r.payment_proof || undefined,
+    timestamp: new Date(r.created_at).getTime(),
+  }));
 }
 
-export function addCustomProduct(product: Omit<Product, "id">): Product {
-  const products = getCustomProducts();
-  const newProduct: Product = { ...product, id: `custom-${Date.now()}` };
-  products.push(newProduct);
-  localStorage.setItem("bv_custom_products", JSON.stringify(products));
-  return newProduct;
+export async function addOrder(order: Omit<Order, "id" | "timestamp">): Promise<Order | null> {
+  const { data, error } = await supabase
+    .from("orders")
+    .insert({
+      product_name: order.productName,
+      product_image: order.productImage,
+      customer_name: order.name,
+      phone: order.phone,
+      age: order.age,
+      size: order.size,
+      address: order.address,
+      payment_method: order.paymentMethod,
+      payment_proof: order.paymentProof ?? null,
+    })
+    .select()
+    .single();
+  if (error || !data) {
+    console.error("addOrder error", error);
+    return null;
+  }
+  return {
+    id: data.id,
+    productName: data.product_name,
+    productImage: data.product_image,
+    name: data.customer_name,
+    phone: data.phone,
+    age: data.age,
+    size: data.size,
+    address: data.address,
+    paymentMethod: data.payment_method as "fonepay" | "cod",
+    paymentProof: data.payment_proof || undefined,
+    timestamp: new Date(data.created_at).getTime(),
+  };
 }
 
-export function deleteCustomProduct(id: string): void {
-  const products = getCustomProducts().filter((p) => p.id !== id);
-  localStorage.setItem("bv_custom_products", JSON.stringify(products));
+export async function deleteOrder(id: string): Promise<void> {
+  const { error } = await supabase.from("orders").delete().eq("id", id);
+  if (error) console.error("deleteOrder error", error);
+}
+
+// ===== Custom Products (cloud) =====
+
+export async function getCustomProducts(): Promise<Product[]> {
+  const { data, error } = await supabase
+    .from("custom_products")
+    .select("*")
+    .order("created_at", { ascending: true });
+  if (error) {
+    console.error("getCustomProducts error", error);
+    return [];
+  }
+  return (data || []).map((r: any) => ({
+    id: r.id,
+    name: r.name,
+    price: Number(r.price),
+    image: r.image,
+    tag: r.tag || undefined,
+  }));
+}
+
+export async function addCustomProduct(product: Omit<Product, "id">): Promise<Product | null> {
+  const { data, error } = await supabase
+    .from("custom_products")
+    .insert({
+      name: product.name,
+      price: product.price,
+      image: product.image,
+      tag: product.tag ?? null,
+    })
+    .select()
+    .single();
+  if (error || !data) {
+    console.error("addCustomProduct error", error);
+    return null;
+  }
+  return {
+    id: data.id,
+    name: data.name,
+    price: Number(data.price),
+    image: data.image,
+    tag: data.tag || undefined,
+  };
+}
+
+export async function deleteCustomProduct(id: string): Promise<void> {
+  const { error } = await supabase.from("custom_products").delete().eq("id", id);
+  if (error) console.error("deleteCustomProduct error", error);
 }
