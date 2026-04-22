@@ -1,0 +1,25 @@
+// Safe Supabase client with hardcoded fallbacks so the app works on
+// any host (e.g. Netlify) even if VITE_* env vars aren't configured.
+// These keys are public (anon/publishable) — safe to ship in frontend code.
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "./types";
+
+const SUPABASE_URL =
+  import.meta.env.VITE_SUPABASE_URL ||
+  "https://ddddqyojaqydwctbgevz.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRkZGRxeW9qYXF5ZHdjdGJnZXZ6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NjUwNjYsImV4cCI6MjA5MjA0MTA2Nn0.sD4SCbDQJryLlOvjc0RoZaUg4SLC3hnIKcyXm3RMx7A";
+
+export const supabase = createClient<Database>(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY,
+  {
+    auth: {
+      storage: localStorage,
+      persistSession: true,
+      autoRefreshToken: true,
+    },
+  }
+);
